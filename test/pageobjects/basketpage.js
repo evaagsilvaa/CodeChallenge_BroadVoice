@@ -10,12 +10,20 @@ class BasketPage extends Page {
         return $('//div[@class="add-to-cart  dropdown"]/a');
     }
 
+    get basketBtn() {
+        return $('//div[@class="add-to-cart  dropdown"]');
+    }
+
     get allDistinctBooks() {
         return $$('//div[@class="addToCart-item"]/div[@class="row"]');
     }
 
     get emptyBasketText() {
         return $('//div[@class="add-to-cart  dropdown"]/div/div');
+    }
+
+    get basketOpen() {
+        return $('//div[@class="dropdown-menu dropdown-menu-right show"]');
     }
 
     async numberOfBooksWithSpecificTitle(title) {
@@ -26,6 +34,10 @@ class BasketPage extends Page {
     }
 
     async removeBookWithSpecificTitle(title) {
+        if (!(await this.basketOpen).isDisplayed()){
+            (await this.basketBtn).click();
+        }
+
         const allBooksOnBasket = await this.allDistinctBooks;
         for (const book of allBooksOnBasket){
             if (await book.$('h2 > a').getText() === title){
