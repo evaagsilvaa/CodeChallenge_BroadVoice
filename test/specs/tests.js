@@ -3,24 +3,27 @@ import HomePage from '../pageobjects/homepage.page.js'
 import SearchPage from '../pageobjects/searchpage.js'
 import BookPage from '../pageobjects/bookpage.js'
 import BasketPage from '../pageobjects/basketpage.js'
+import homepagePage from '../pageobjects/homepage.page.js'
 
 describe('LeYa website', () => {
-    it('Scenario 1 - Seeking "George" Confirming "O Triunfo dos Porcos" Presence, and Validating Book Description with "Quinta Manor"', async () => {
+    beforeEach('Open Page', async () => {
         //Open LeYa URL
         await HomePage.open();
-        
+
         //Accept Cookies
         await HomePage.clickAcceptCookies();
-        
+    })
+
+
+    it('Scenario 1 - Seeking "George" Confirming "O Triunfo dos Porcos" Presence, and Validating Book Description with "Quinta Manor"', async () => {        
         //Search for 'George'
         await HomePage.searchFor('George');
 
         //Verify that the Search Page opens
-        await browser.pause(1000);
         await expect(await SearchPage.breadcrumb).toHaveText("Pesquisa");
 
         //Verify that there's a book with the name 'O Triunfo dos Porcos'
-        var bookExist = await SearchPage.verifyIfBookExist('O Triunfo dos Porcos');
+        const bookExist = await SearchPage.verifyIfBookExist('O Triunfo dos Porcos');
         await expect(bookExist).toBe(true);
 
         //Click on book 'O Triunfo dos Porcos'
@@ -34,21 +37,14 @@ describe('LeYa website', () => {
 
     }),
     it('Scenario 2 - Searching for "1984" and Confirming Author, ISBN, Pages, and Dimensions', async () => {
-        //Open LeYa URL
-        await HomePage.open();
-        
-        //Accept Cookies
-        await HomePage.clickAcceptCookies();
-        
         //Search for 'George'
         await HomePage.searchFor('1984');
 
         //Verify that the Search Page opens
-        await browser.pause(1000);
         await expect(SearchPage.breadcrumb).toHaveText("Pesquisa");
 
         //Verify that there's a book with the name '1984'
-        var bookExist = await SearchPage.verifyIfBookExist('1984');
+        const bookExist = await SearchPage.verifyIfBookExist('1984');
         await expect(bookExist).toBe(true);
 
         //Click on book '1984'
@@ -72,18 +68,14 @@ describe('LeYa website', () => {
 
     }),
     it('Scenario 3 - Searching for "1984" and Confirming Authorship of "A Quinta dos Animais"', async () => {
-        //Open LeYa URL
-        await HomePage.open();
-
         //Search for '1984'
         await HomePage.searchFor('1984');
 
         //Verify that the Search Page opens
-        await browser.pause(1000);
         await expect(SearchPage.breadcrumb).toHaveText("Pesquisa");
 
         //Verify that there's a book with the name '1984'
-        var bookExist = await SearchPage.verifyIfBookExist('1984');
+        const bookExist = await SearchPage.verifyIfBookExist('1984');
         await expect(bookExist).toBe(true);
 
         //Click on book '1984'
@@ -93,22 +85,18 @@ describe('LeYa website', () => {
         await expect(SearchPage.breadcrumb).toHaveText("1984");
 
         //Verify that the book 'A Quinta dos Animais' is authored by the same author
-        var bookSameAuthorExist = await BookPage.verifyIfBookHasSameAuthor('A Quinta dos Animais');
+        const bookSameAuthorExist = await BookPage.verifyIfBookHasSameAuthor('A Quinta dos Animais');
         await expect(bookSameAuthorExist).toBe(true);
     }),
     it('Scenario 4 - Finding and Adding "1984" to the Basket', async () => {
-        //Open LeYa URL
-        await HomePage.open();
-
         //Search for '1984'
         await HomePage.searchFor('1984');
 
         //Verify that the Search Page opens
-        await browser.pause(1000);
         await expect(SearchPage.breadcrumb).toHaveText("Pesquisa");
 
         //Verify that there's a book with the name '1984'
-        var bookExist = await SearchPage.verifyIfBookExist('1984');
+        const bookExist = await SearchPage.verifyIfBookExist('1984');
         await expect(bookExist).toBe(true);
 
         //Add book '1984' to basket
@@ -121,9 +109,6 @@ describe('LeYa website', () => {
         await expect(await BasketPage.numberOfBooksWithSpecificTitle("1984")).toHaveText("1")
     }),
     it('Scenario 5 - Switch to the dark mode theme', async () => {
-        //Open LeYa URL
-        await HomePage.open();
-        
         //Click on Dark Mode icon
         await HomePage.clickDarkModeBtn();
 
@@ -134,18 +119,14 @@ describe('LeYa website', () => {
         await expect(await HomePage.darkModeIcon).toHaveAttribute('class','nav-icon icon-moon');
     }),
     it('Scenario 6 - Add a book to the basket and then remove it', async () => {
-        //Open LeYa URL
-        await HomePage.open();
-
         //Search for '1984'
         await HomePage.searchFor('1984');
 
         //Verify that the Search Page opens
-        await browser.pause(1000);
         await expect(SearchPage.breadcrumb).toHaveText("Pesquisa");
 
         //Verify that there's a book with the name '1984'
-        var bookExist = await SearchPage.verifyIfBookExist('1984');
+        const bookExist = await SearchPage.verifyIfBookExist('1984');
         await expect(bookExist).toBe(true);
 
         //Add book '1984' to basket
@@ -159,14 +140,10 @@ describe('LeYa website', () => {
 
     }),
     it('Scenario 7 - Search using a filter by price', async () => {
-        //Open LeYa URL
-        await HomePage.open();
-
         //Search for '1984'
         await HomePage.searchFor('1984');
 
         //Verify that the Search Page opens
-        await browser.pause(1000);
         await expect(SearchPage.breadcrumb).toHaveText("Pesquisa");
 
         //Filter search by price (10€ to 20€)

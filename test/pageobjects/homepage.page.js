@@ -6,11 +6,11 @@ import Page from './page.js';
  */
 class HomePage extends Page {
 
-    get searchField () {
+    get searchField() {
         return $('//input[@id="searchbar-large"]');
     }
 
-    get searchBtn () {
+    get searchBtn() {
         return $('//button[@class="searchbar-large"]');
     }
 
@@ -29,19 +29,35 @@ class HomePage extends Page {
     get darkModeIcon() {
         return $('//*[@id="darkmode"]//i');
     }
-
-    async clickAcceptCookies () {
-        await this.acceptCookies.click();
+    
+    get searchResults() {
+        return $('//div[@class="search-content search-bar-results"]');
     }
 
-    async searchFor (text) {
+    async clickAcceptCookies() {
+        const acceptCookies = await this.acceptCookies;
+        await acceptCookies.waitForDisplayed({ timeout: 3000 });
+        if (acceptCookies) {
+            acceptCookies.click();
+        }
+    }
+
+    async searchFor(text) {
+        (await this.searchField).waitForDisplayed({ timeout: 3000 });
         await this.searchField.setValue(text);
-        await browser.pause(500);
-        await this.searchBtn.click();
+
+        (await this.searchResults).waitForDisplayed({ timeout: 3000 });
+
+        (await this.searchBtn).waitForDisplayed({ timeout: 3000 });
+        (await this.searchBtn).click();
     }
 
-    async clickDarkModeBtn () {
-        await this.darkModeBtn.click();
+    async clickDarkModeBtn() {
+        const darkModeBtn = await this.darkModeBtn;
+        await darkModeBtn.waitForDisplayed({ timeout: 3000 });
+        if (darkModeBtn) {
+            darkModeBtn.click();
+        }
     }
 }
 

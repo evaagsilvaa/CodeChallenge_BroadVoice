@@ -13,7 +13,7 @@ export default class Page {
         return browser.maximizeWindow();
     }
 
-    open () {
+    open() {
         this.maximizeWindowBrowser();
         return browser.url(`https://www.leyaonline.com/pt/`);
     }

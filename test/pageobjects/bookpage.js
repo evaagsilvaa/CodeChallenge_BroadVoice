@@ -6,41 +6,43 @@ import Page from './page.js';
  */
 class BookPage extends Page {
 
-    get breadcrumb () {
+    get breadcrumb() {
         return $('//li[@class="breadcrumb-item active"]');
     }
 
-    get description () {
+    get description() {
         return $('//section[@class="sinopse"]//div[contains(@class, "show-more")]');
     }
 
-    get author () {
+    get author() {
         return $('//a[@class="nome_autor"][1]');
     }
 
-    get isbn () {
+    get isbn() {
         return $('//section[@class="sinopse"]//ul/li[contains(text(),"ISBN: ")]');
     }
 
-    get numPages () {
+    get numPages() {
         return $('//section[@class="sinopse"]//ul/li[contains(text(),"Páginas: ")]');
     }
 
-    get dimensions () {
+    get dimensions() {
         return $('//section[@class="sinopse"]//ul/li[contains(text(),"Dimensões: ")]');
     }
 
-    get booksOfSameAuthor () {
+    get booksOfSameAuthor() {
         return $$('//div[@id="second-container"]//section[@class="similar-books"][1]//div[contains(@id, "bookcard")]');
     }
 
-    async verifyIfBookHasSameAuthor (title) {
-        var allBooksList = await this.booksOfSameAuthor;
-        for (var book of allBooksList){
-            if (await book.$('h6.book-title').getText() == title) return true;
+    async verifyIfBookHasSameAuthor(title) {
+        const allBooksList = await this.booksOfSameAuthor;
+        await allBooksList.waitForDisplayed({ timeout: 3000 });
+        for (const book of allBooksList){
+            if (await book.$('h6.book-title').getText() === title) return true;
         }
-    }
 
+        return false;
+    }
 }
 
 export default new BookPage();
