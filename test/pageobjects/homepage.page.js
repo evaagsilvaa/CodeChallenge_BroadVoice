@@ -36,28 +36,22 @@ class HomePage extends Page {
 
     async clickAcceptCookies() {
         const acceptCookies = await this.acceptCookies;
-        await acceptCookies.waitForDisplayed({ timeout: 3000 });
         if (acceptCookies) {
             acceptCookies.click();
         }
     }
 
     async searchFor(text) {
-        (await this.searchField).waitForDisplayed({ timeout: 3000 });
         await this.searchField.setValue(text);
 
         (await this.searchResults).waitForDisplayed({ timeout: 3000 });
 
-        (await this.searchBtn).waitForDisplayed({ timeout: 3000 });
         (await this.searchBtn).click();
     }
 
     async clickDarkModeBtn() {
         const darkModeBtn = await this.darkModeBtn;
-        await darkModeBtn.waitForDisplayed({ timeout: 3000 });
-        if (darkModeBtn) {
-            darkModeBtn.click();
-        }
+        darkModeBtn.click();
     }
 }
 

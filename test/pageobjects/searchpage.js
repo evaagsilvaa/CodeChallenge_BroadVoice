@@ -32,9 +32,12 @@ class SearchPage extends Page {
         return $$('//div[@class="filter-item "]/a[contains(@href,"price_range")]');
     }
 
+    get filterPage() {
+        return $('//div[@class="offcanvas offcanvas-end show"]');
+    }
+
     async verifyIfBookExist(title) {
         const allBooksList = await this.allBooks;
-        await allBooksList.waitForDisplayed({ timeout: 3000 });
         for (const book of allBooksList){
             if (await book.$('h6.book-title').getText() === title) return true;
         }
@@ -43,7 +46,6 @@ class SearchPage extends Page {
 
     async addBookToBasket(title) {
         const allBooksList = await this.allBooks;
-        await allBooksList.waitForDisplayed({ timeout: 3000 });
         for (const book of allBooksList){
             if (await book.$('h6.book-title').getText() === title){
                 await book.$('a.more.buy-button').click();
@@ -54,7 +56,6 @@ class SearchPage extends Page {
 
     async clickOnBook(title) {
         const allBooksList = await this.allBooks;
-        await allBooksList.waitForDisplayed({ timeout: 3000 });
         for (const book of allBooksList){
             if (await book.$('h6.book-title').getText() === title){
                 book.click();
@@ -68,9 +69,8 @@ class SearchPage extends Page {
     }
 
     async filterByPrice(range) {
-        const allPriceFilters_ = await this.allPriceFilters;
-        await allPriceFilters_.waitForDisplayed({ timeout: 3000 });
-        for (const priceFilter of allPriceFilters_){
+        const allPriceFilters = await this.allPriceFilters;
+        for (const priceFilter of allPriceFilters){
             const filterText = await priceFilter.getText();
             if (filterText.includes(range)){
                 priceFilter.click();
@@ -79,12 +79,29 @@ class SearchPage extends Page {
         }
     }
 
-    async getNumberOfBooksDisplayed() {
-        await this.allBooks.waitForDisplayed({ timeout: 3000 });
-        return await this.allBooks.length;
+    async getNumberOfBooksDisplayed(number) {        
+        return await browser.waitUntil(async () => {
+            const numBooks = await this.allBooks.length;
+
+            return (await numBooks) === number;
+        });
     }
 
+    async hasBreadcrumb(name) {
+        return await browser.waitUntil(async () => {
+            const breadcrumb = await this.breadcrumb;
 
+            return (await breadcrumb.getText()) === name;
+          });
+    }
+
+    async priceFilterIsClickable() {
+        return await browser.waitUntil(async () => {
+            const firstPriceFilter = await this.allPriceFilters[0];
+            return (await firstPriceFilter.isClickable());
+        });
+    }
+    
 }
 
 export default new SearchPage();

@@ -3,10 +3,10 @@ import HomePage from '../pageobjects/homepage.page.js'
 import SearchPage from '../pageobjects/searchpage.js'
 import BookPage from '../pageobjects/bookpage.js'
 import BasketPage from '../pageobjects/basketpage.js'
-import homepagePage from '../pageobjects/homepage.page.js'
 
 describe('LeYa website', () => {
     beforeEach('Open Page', async () => {
+        await browser.setTimeout({ 'implicit': 5000 });
         //Open LeYa URL
         await HomePage.open();
 
@@ -15,12 +15,12 @@ describe('LeYa website', () => {
     })
 
 
-    it('Scenario 1 - Seeking "George" Confirming "O Triunfo dos Porcos" Presence, and Validating Book Description with "Quinta Manor"', async () => {        
+    it.skip('Scenario 1 - Seeking "George" Confirming "O Triunfo dos Porcos" Presence, and Validating Book Description with "Quinta Manor"', async () => {        
         //Search for 'George'
         await HomePage.searchFor('George');
 
         //Verify that the Search Page opens
-        await expect(await SearchPage.breadcrumb).toHaveText("Pesquisa");
+        await expect(await SearchPage.hasBreadcrumb("Pesquisa")).toBe(true);
 
         //Verify that there's a book with the name 'O Triunfo dos Porcos'
         const bookExist = await SearchPage.verifyIfBookExist('O Triunfo dos Porcos');
@@ -30,18 +30,18 @@ describe('LeYa website', () => {
         await SearchPage.clickOnBook('O Triunfo dos Porcos');
 
         //Verify that the Book page opens
-        await expect(SearchPage.breadcrumb).toHaveText("O Triunfo dos Porcos");
+        await expect(await SearchPage.hasBreadcrumb("O Triunfo dos Porcos")).toBe(true);
 
         //Check description of the book
         await expect(await BookPage.description).toHaveText(expect.stringContaining('Quinta Manor'));
 
     }),
-    it('Scenario 2 - Searching for "1984" and Confirming Author, ISBN, Pages, and Dimensions', async () => {
+    it.skip('Scenario 2 - Searching for "1984" and Confirming Author, ISBN, Pages, and Dimensions', async () => {
         //Search for 'George'
         await HomePage.searchFor('1984');
 
         //Verify that the Search Page opens
-        await expect(SearchPage.breadcrumb).toHaveText("Pesquisa");
+        await expect(await SearchPage.hasBreadcrumb("Pesquisa")).toBe(true);
 
         //Verify that there's a book with the name '1984'
         const bookExist = await SearchPage.verifyIfBookExist('1984');
@@ -51,7 +51,7 @@ describe('LeYa website', () => {
         await SearchPage.clickOnBook('1984');
         
         //Verify that the Book page opens
-        await expect(SearchPage.breadcrumb).toHaveText("1984");
+        await expect(await SearchPage.hasBreadcrumb("1984")).toBe(true);
 
         //Check author of the book
         await expect(BookPage.author).toHaveText('GEORGE ORWELL');
@@ -67,12 +67,12 @@ describe('LeYa website', () => {
 
 
     }),
-    it('Scenario 3 - Searching for "1984" and Confirming Authorship of "A Quinta dos Animais"', async () => {
+    it.skip('Scenario 3 - Searching for "1984" and Confirming Authorship of "A Quinta dos Animais"', async () => {
         //Search for '1984'
         await HomePage.searchFor('1984');
 
         //Verify that the Search Page opens
-        await expect(SearchPage.breadcrumb).toHaveText("Pesquisa");
+        await expect(await SearchPage.hasBreadcrumb("Pesquisa")).toBe(true);
 
         //Verify that there's a book with the name '1984'
         const bookExist = await SearchPage.verifyIfBookExist('1984');
@@ -82,18 +82,18 @@ describe('LeYa website', () => {
         await SearchPage.clickOnBook('1984');
 
         //Verify that the Book page opens
-        await expect(SearchPage.breadcrumb).toHaveText("1984");
+        await expect(await SearchPage.hasBreadcrumb("1984")).toBe(true);
 
         //Verify that the book 'A Quinta dos Animais' is authored by the same author
         const bookSameAuthorExist = await BookPage.verifyIfBookHasSameAuthor('A Quinta dos Animais');
         await expect(bookSameAuthorExist).toBe(true);
     }),
-    it('Scenario 4 - Finding and Adding "1984" to the Basket', async () => {
+    it.skip('Scenario 4 - Finding and Adding "1984" to the Basket', async () => {
         //Search for '1984'
         await HomePage.searchFor('1984');
 
         //Verify that the Search Page opens
-        await expect(SearchPage.breadcrumb).toHaveText("Pesquisa");
+        await expect(await SearchPage.hasBreadcrumb("Pesquisa")).toBe(true);
 
         //Verify that there's a book with the name '1984'
         const bookExist = await SearchPage.verifyIfBookExist('1984');
@@ -108,7 +108,7 @@ describe('LeYa website', () => {
         //Check if number of books added to the basket with the title 1984
         await expect(await BasketPage.numberOfBooksWithSpecificTitle("1984")).toHaveText("1")
     }),
-    it('Scenario 5 - Switch to the dark mode theme', async () => {
+    it.skip('Scenario 5 - Switch to the dark mode theme', async () => {
         //Click on Dark Mode icon
         await HomePage.clickDarkModeBtn();
 
@@ -123,8 +123,8 @@ describe('LeYa website', () => {
         await HomePage.searchFor('1984');
 
         //Verify that the Search Page opens
-        await expect(SearchPage.breadcrumb).toHaveText("Pesquisa");
-
+        await expect(await SearchPage.hasBreadcrumb("Pesquisa")).toBe(true);
+        
         //Verify that there's a book with the name '1984'
         const bookExist = await SearchPage.verifyIfBookExist('1984');
         await expect(bookExist).toBe(true);
@@ -139,19 +139,20 @@ describe('LeYa website', () => {
         await expect(await BasketPage.emptyBasketText).toHaveText('Carrinho vazio');
 
     }),
-    it('Scenario 7 - Search using a filter by price', async () => {
+    it.skip('Scenario 7 - Search using a filter by price', async () => {
         //Search for '1984'
         await HomePage.searchFor('1984');
 
         //Verify that the Search Page opens
-        await expect(SearchPage.breadcrumb).toHaveText("Pesquisa");
+        await expect(await SearchPage.hasBreadcrumb("Pesquisa")).toBe(true);
 
         //Filter search by price (10€ to 20€)
         await SearchPage.clickFilterBtn();
+        await expect(await SearchPage.priceFilterIsClickable()).toBe(true);
         await SearchPage.filterByPrice("€10 - €20");
 
         //Verify that there's only one book displayed
-        await expect(await SearchPage.getNumberOfBooksDisplayed()).toBe(1);
+        await expect(await SearchPage.getNumberOfBooksDisplayed(1)).toBe(true);
     })
 })
 

@@ -20,7 +20,6 @@ class BasketPage extends Page {
 
     async numberOfBooksWithSpecificTitle(title) {
         const allBooksOnBasket = await this.allDistinctBooks;
-        await allBooksOnBasket.waitForDisplayed({ timeout: 3000 });
         for (const book of allBooksOnBasket){
             if (await book.$('h2 > a').getText() === title) return await book.$('span.b-count');
         }
@@ -28,15 +27,16 @@ class BasketPage extends Page {
 
     async removeBookWithSpecificTitle(title) {
         const allBooksOnBasket = await this.allDistinctBooks;
-        await allBooksOnBasket.waitForDisplayed({ timeout: 3000 });
         for (const book of allBooksOnBasket){
             if (await book.$('h2 > a').getText() === title){
+                await browser.waitUntil(async () => {
+                    return (await book.$('a[title="Remover"]').isClickable());
+                });
                 await book.$('a[title="Remover"]').click();
                 break;
             }
         }
     }
-
 
 }
 

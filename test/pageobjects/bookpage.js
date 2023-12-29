@@ -36,7 +36,6 @@ class BookPage extends Page {
 
     async verifyIfBookHasSameAuthor(title) {
         const allBooksList = await this.booksOfSameAuthor;
-        await allBooksList.waitForDisplayed({ timeout: 3000 });
         for (const book of allBooksList){
             if (await book.$('h6.book-title').getText() === title) return true;
         }
