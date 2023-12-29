@@ -15,7 +15,7 @@ describe('LeYa website', () => {
     })
 
 
-    it.skip('Scenario 1 - Seeking "George" Confirming "O Triunfo dos Porcos" Presence, and Validating Book Description with "Quinta Manor"', async () => {        
+    it('Scenario 1 - Seeking "George" Confirming "O Triunfo dos Porcos" Presence, and Validating Book Description with "Quinta Manor"', async () => {        
         //Search for 'George'
         await HomePage.searchFor('George');
 
@@ -36,7 +36,7 @@ describe('LeYa website', () => {
         await expect(await BookPage.description).toHaveText(expect.stringContaining('Quinta Manor'));
 
     }),
-    it.skip('Scenario 2 - Searching for "1984" and Confirming Author, ISBN, Pages, and Dimensions', async () => {
+    it('Scenario 2 - Searching for "1984" and Confirming Author, ISBN, Pages, and Dimensions', async () => {
         //Search for 'George'
         await HomePage.searchFor('1984');
 
@@ -67,7 +67,7 @@ describe('LeYa website', () => {
 
 
     }),
-    it.skip('Scenario 3 - Searching for "1984" and Confirming Authorship of "A Quinta dos Animais"', async () => {
+    it('Scenario 3 - Searching for "1984" and Confirming Authorship of "A Quinta dos Animais"', async () => {
         //Search for '1984'
         await HomePage.searchFor('1984');
 
@@ -88,7 +88,7 @@ describe('LeYa website', () => {
         const bookSameAuthorExist = await BookPage.verifyIfBookHasSameAuthor('A Quinta dos Animais');
         await expect(bookSameAuthorExist).toBe(true);
     }),
-    it.skip('Scenario 4 - Finding and Adding "1984" to the Basket', async () => {
+    it('Scenario 4 - Finding and Adding "1984" to the Basket', async () => {
         //Search for '1984'
         await HomePage.searchFor('1984');
 
@@ -108,7 +108,7 @@ describe('LeYa website', () => {
         //Check if number of books added to the basket with the title 1984
         await expect(await BasketPage.numberOfBooksWithSpecificTitle("1984")).toHaveText("1")
     }),
-    it.skip('Scenario 5 - Switch to the dark mode theme', async () => {
+    it('Scenario 5 - Switch to the dark mode theme', async () => {
         //Click on Dark Mode icon
         await HomePage.clickDarkModeBtn();
 
@@ -139,7 +139,7 @@ describe('LeYa website', () => {
         await expect(await BasketPage.emptyBasketText).toHaveText('Carrinho vazio');
 
     }),
-    it.skip('Scenario 7 - Search using a filter by price', async () => {
+    it('Scenario 7 - Search using a filter by price', async () => {
         //Search for '1984'
         await HomePage.searchFor('1984');
 
